@@ -65,7 +65,7 @@
             font-weight: 700;
             line-height: 1.3;
         }
-        
+
         .subtitle {
             font-size: 0.95rem;
             margin-bottom: 25px;
@@ -953,33 +953,9 @@
         function endGame() {
             clearInterval(gameState.timer);
 
-            // Calculate time spent (capped at timeLimit)
             const timeSpent = Math.min(gameState.timeSpent, gameState.timeLimit);
 
-            // Save to leaderboard
-            gameState.leaderboard.push({
-                name: gameState.playerName,
-                score: gameState.score,
-                timeSpent: timeSpent,
-                date: new Date().toISOString()
-            });
-
-            // Sort leaderboard by score (descending) then time spent (ascending)
-            gameState.leaderboard.sort((a, b) => {
-                if (b.score !== a.score) return b.score - a.score;
-                return a.timeSpent - b.timeSpent;
-            });
-
-            // Keep only top 10 scores
-            if (gameState.leaderboard.length > 10) {
-                gameState.leaderboard = gameState.leaderboard.slice(0, 10);
-            }
-
-            // Save to localStorage
-            localStorage.setItem('leaderboard', JSON.stringify(gameState.leaderboard));
-
-            // Show score screen
-            // Send data to Google Sheets
+            // ✅ Google Sheets integration
             fetch('https://script.google.com/macros/s/AKfycbzwE4kBe3BtxJ4W2hP2qyU9-SMIgmrx5wjs2vvbTUO9H59HCVu71vq9D4oj-qIJiuFrrg/exec', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -993,7 +969,7 @@
             })
                 .then(res => res.text())
                 .then(res => console.log("Submitted:", res))
-                .catch(err => console.error("Error:", err));
+                .catch(err => console.error("Error sending to Google Sheets:", err));
 
             showScoreScreen();
         }
