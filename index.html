@@ -13,6 +13,10 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
+            /* Ensure all text displays horizontally */
+            writing-mode: horizontal-tb !important;
+            text-orientation: mixed !important;
+            direction: ltr !important;
         }
 
         body {
@@ -28,7 +32,7 @@
 
         .container {
             width: 100%;
-            max-width: 1000px;
+            max-width: 1400px;
             background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
             border-radius: 15px;
@@ -228,20 +232,23 @@
         .game-board {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 6px;
             min-height: auto;
+            width: 100%;
         }
 
         .column {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            padding: 15px;
+            padding: 12px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             min-width: 0;
             /* Allows column to shrink */
+            flex: 1;
+            /* Take up available space */
         }
 
         .column-title {
@@ -252,15 +259,18 @@
             padding-bottom: 8px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             color: #ffd700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow: visible;
+            font-weight: 600;
+            /* Ensure horizontal text */
+            writing-mode: horizontal-tb;
+            text-orientation: mixed;
         }
 
         .cards-container {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
+            gap: 8px;
         }
 
         /* UPDATED CARD STYLES */
@@ -273,11 +283,9 @@
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: block;
             text-align: center;
             font-size: 0.9rem;
             font-weight: 500;
@@ -289,6 +297,15 @@
             line-height: 1.4;
             padding-top: 28px;
             /* Extra space for Q/A indicator */
+            padding-bottom: 12px;
+            /* Extra space at bottom */
+            /* Ensure horizontal text */
+            writing-mode: horizontal-tb;
+            text-orientation: mixed;
+            white-space: normal;
+            /* Force text to display normally */
+            direction: ltr;
+            unicode-bidi: normal;
         }
 
         .card.selected {
@@ -320,6 +337,32 @@
             font-weight: bold;
             color: #2c5c75;
             font-size: 0.9rem;
+        }
+
+        /* Force text content to display horizontally */
+        .card>* {
+            writing-mode: horizontal-tb !important;
+            text-orientation: mixed !important;
+            direction: ltr !important;
+            display: inline !important;
+        }
+
+        /* Additional fix for text nodes */
+        .card {
+            text-orientation: mixed !important;
+            writing-mode: horizontal-tb !important;
+            direction: ltr !important;
+        }
+
+        /* Ensure span elements display text properly */
+        .card span {
+            display: inline-block !important;
+            writing-mode: horizontal-tb !important;
+            text-orientation: mixed !important;
+            direction: ltr !important;
+            white-space: normal !important;
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
         }
 
         /* Score Screen */
@@ -460,126 +503,83 @@
         /* UPDATED RESPONSIVE ADJUSTMENTS */
         @media (max-width: 480px) {
             #game-screen {
-                padding: 10px;
-
-                /* Reduced padding */
-                .game-board {
-                    display: grid;
-                    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr);
-                    gap: 8px;
-                }
-
-                .timer {
-                    font-size: 0.8rem;
-                    padding: 4px 8px;
-                    gap: 4px;
-                }
-
-                .timer i {
-                    font-size: 0.7rem;
-                }
-
-                .column {
-                    padding: 8px;
-                }
-
-                .card {
-                    font-size: 0.85rem;
-                    padding: 10px 10px;
-                    padding-top: 24px;
-                    line-height: 1.5;
-                }
-
+                padding: 4px;
             }
 
             .game-board {
-                gap: 8px;
-                /* Reduced gap */
+                gap: 2px;
+                grid-template-columns: 1fr 1fr;
             }
 
             .column {
-                padding: 10px 40px;
-                /* Reduced padding */
-            }
-
-            .column:first-child {
-                margin-right: -5px;
-                /* Move question column slightly left */
-            }
-
-            .column:last-child {
-                margin-left: -5px;
-                /* Move answer column slightly right */
-            }
-
-            .card {
-                min-height: auto;
-                /* Flexible height */
-                height: auto;
-                /* Flexible height */
-                font-size: 0.82rem;
-                /* Slightly smaller font */
-                padding: 10px 36px;
-                /* Adjusted padding */
-                padding-top: 22px;
-                /* Space for Q/A indicator */
+                padding: 4px 2px;
+                gap: 4px;
             }
 
             .column-title {
-                font-size: 1.1rem;
-                padding: 0 5px;
-                /* Added padding */
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+                padding-bottom: 6px;
+                white-space: normal;
+                overflow: visible;
+                text-overflow: clip;
+            }
+
+            .card {
+                min-height: 70px;
+                font-size: 0.75rem;
+                padding: 4px 2px;
+                padding-top: 16px;
+                padding-bottom: 4px;
+                line-height: 1.3;
+                border-radius: 8px;
+                box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+                overflow: visible;
+                word-break: break-word;
+                /* Ensure horizontal text on mobile */
+                writing-mode: horizontal-tb;
+                text-orientation: mixed;
+                white-space: normal;
+                /* Force text to display normally */
+                direction: ltr;
+                unicode-bidi: normal;
+                display: block;
+            }
+
+            .card:before {
+                top: 4px;
+                left: 4px;
+                font-size: 0.7rem;
+            }
+
+            .cards-container {
+                gap: 2px;
             }
 
             .timer {
-                font-size: 1rem;
-                /* Reduced font size */
-                padding: 6px 12px;
-                /* Reduced padding */
+                font-size: 0.9rem;
+                padding: 6px 10px;
                 gap: 4px;
-                /* Reduced gap */
             }
 
             .timer i {
                 font-size: 0.8rem;
-                /* Reduced icon size */
             }
 
             .player-icon {
-                width: 38px;
-                /* Reduced size */
-                height: 38px;
-                /* Reduced size */
-                font-size: 1rem;
-                /* Reduced font */
+                width: 35px;
+                height: 35px;
+                font-size: 0.9rem;
             }
 
             #current-player {
-                font-size: 1.05rem;
-                /* Reduced font */
-                max-width: 120px;
-                /* Reduced max width */
-            }
-
-            /* Position Q/A indicators better */
-            .card:before {
-                top: 6px;
-                left: 6px;
-                font-size: 0.8rem;
-                /* Reduced size */
-            }
-
-            /* Reduce gap between cards */
-            .cards-container {
-                gap: 7px;
-                /* Reduced gap */
+                font-size: 1rem;
+                max-width: 100px;
             }
 
             .btn {
-                padding: 12px 20px;
-                /* Reduced padding */
-                font-size: 0.95rem;
-                /* Reduced font */
+                padding: 10px 16px;
+                font-size: 0.9rem;
             }
         }
 
@@ -685,12 +685,12 @@
 
         <div class="game-board">
             <div class="column">
-                <h3 class="column-title">Business Concepts</h3>
+                <h3 class="column-title">Questions</h3>
                 <div class="cards-container" id="questions-container"></div>
             </div>
 
             <div class="column">
-                <h3 class="column-title">Definitions</h3>
+                <h3 class="column-title">Answers</h3>
                 <div class="cards-container" id="answers-container"></div>
             </div>
         </div>
@@ -840,25 +840,33 @@
             questionsContainer.innerHTML = '';
             answersContainer.innerHTML = '';
 
-            // Shuffle questions and answers
-            const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
-            const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
+            // Create pairs of questions and answers
+            const questionAnswerPairs = questions.map((question, index) => ({
+                question: question,
+                answer: answers[index],
+                questionIndex: index
+            }));
+
+            // Shuffle the pairs
+            const shuffledPairs = questionAnswerPairs.sort(() => Math.random() - 0.5);
 
             // Create question cards
-            shuffledQuestions.forEach((question, index) => {
+            shuffledPairs.forEach((pair, index) => {
                 const card = document.createElement('div');
                 card.className = 'card question';
-                card.textContent = question;
+                card.innerHTML = '<span>' + pair.question + '</span>';
+                card.dataset.questionIndex = pair.questionIndex;
                 card.dataset.index = index;
                 card.addEventListener('click', () => selectCard(card, 'question'));
                 questionsContainer.appendChild(card);
             });
 
-            // Create answer cards
+            // Create answer cards (shuffled independently)
+            const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
             shuffledAnswers.forEach((answer, index) => {
                 const card = document.createElement('div');
                 card.className = 'card answer';
-                card.textContent = answer;
+                card.innerHTML = '<span>' + answer + '</span>';
                 card.dataset.index = index;
                 card.addEventListener('click', () => selectCard(card, 'answer'));
                 answersContainer.appendChild(card);
@@ -884,8 +892,8 @@
             // If we're selecting an answer and a question is already selected
             else if (type === 'answer' && gameState.selectedQuestion) {
                 // Get question and answer text
-                const questionText = gameState.selectedQuestion.textContent;
-                const answerText = card.textContent;
+                const questionText = gameState.selectedQuestion.querySelector('span').textContent;
+                const answerText = card.querySelector('span').textContent;
 
                 // Check if it's a match
                 const questionIndex = questions.indexOf(questionText);
