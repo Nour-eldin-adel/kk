@@ -952,11 +952,10 @@
         // End the game
         function endGame() {
             clearInterval(gameState.timer);
-
             const timeSpent = Math.min(gameState.timeSpent, gameState.timeLimit);
 
-            // ✅ Google Sheets integration
-            fetch('https://script.google.com/macros/s/AKfycbzwE4kBe3BtxJ4W2hP2qyU9-SMIgmrx5wjs2vvbTUO9H59HCVu71vq9D4oj-qIJiuFrrg/exec', {
+            // Send data to Google Sheets via proxy
+            fetch('https://kk-xsi8-git-main-nours-projects-98402277.vercel.app/api/send', {
                 method: 'POST',
                 body: JSON.stringify({
                     name: gameState.playerName,
@@ -967,12 +966,13 @@
                     'Content-Type': 'application/json'
                 }
             })
-                .then(res => res.text())
-                .then(res => console.log("Submitted:", res))
-                .catch(err => console.error("Error sending to Google Sheets:", err));
+                .then(res => res.json())
+                .then(data => console.log("Submitted:", data.message))
+                .catch(err => console.error("Error sending to proxy:", err));
 
             showScoreScreen();
         }
+
 
         // Show score screen
         function showScoreScreen() {
