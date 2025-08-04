@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Business Card Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1f3b4d 0%, #2c5c75 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            color: #f0f8ff;
+            touch-action: manipulation;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Welcome Screen */
+        #welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(45deg, #ffd700, #ffb347);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .subtitle {
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+            max-width: 600px;
+            line-height: 1.5;
+            color: #e0f7ff;
+            padding: 0 10px;
+        }
+
+        .input-group {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+            position: relative;
+            padding: 0 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            color: #1f3b4d;
+            font-weight: 500;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #1a936f, #88d498);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(26, 147, 111, 0.4);
+            margin: 8px;
+            width: 90%;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(26, 147, 111, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #2c5c75, #5ca0d3);
+            box-shadow: 0 5px 15px rgba(44, 92, 117, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 8px 20px rgba(44, 92, 117, 0.6);
+        }
+
+        .btn-disabled {
+            background: linear-gradient(45deg, #6c757d, #adb5bd);
+            cursor: not-allowed;
+        }
+
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        /* Game Screen */
+        #game-screen {
+            padding: 15px;
+            display: none;
+        }
+
+        .game-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 0px;
+            gap: 10px;
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .player-icon {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1f3b4d;
+            flex-shrink: 0;
+        }
+
+        .player-name-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            overflow: hidden;
+        }
+
+        #current-player {
+            font-size: 1.2rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+
+        .timer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 15px;
+            /* Reduced padding */
+            border-radius: 50px;
+            font-size: 1.1rem;
+            /* Reduced font size */
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            /* Reduced gap */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            width: fit-content;
+        }
+
+        .timer i {
+            color: #ffd700;
+            font-size: 0.9rem;
+            /* Reduced icon size */
+        }
+
+        /* MAIN CHANGE: Columns side-by-side on mobile */
+        .game-board {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            min-height: auto;
+        }
+
+        .column {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            min-width: 0;
+            /* Allows column to shrink */
+        }
+
+        .column-title {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+            padding-bottom: 8px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            color: #ffd700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        /* UPDATED CARD STYLES */
+        .card {
+            background: rgba(255, 255, 255, 0.92);
+            color: #1f3b4d;
+            padding: 12px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-left: 4px solid #1a936f;
+            /* Fix for text wrapping */
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            hyphens: auto;
+            line-height: 1.4;
+            padding-top: 28px;
+            /* Extra space for Q/A indicator */
+        }
+
+        .card.selected {
+            transform: translateY(-5px);
+            box-shadow: 0 0 0 3px #ffd700;
+        }
+
+        .card.matched {
+            opacity: 0.5;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        .card.question:before {
+            content: "Q";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-weight: bold;
+            color: #1a936f;
+            font-size: 0.9rem;
+        }
+
+        .card.answer:before {
+            content: "A";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-weight: bold;
+            color: #2c5c75;
+            font-size: 0.9rem;
+        }
+
+        /* Score Screen */
+        #score-screen {
+            padding: 25px 15px;
+            text-align: center;
+            display: none;
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+
+        .score-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+
+        .result-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 500px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .result-value {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .leaderboard {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 25px;
+            max-width: 700px;
+            margin: 20px auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .leaderboard h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            margin: 8px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            align-items: center;
+        }
+
+        .leaderboard-item.you {
+            background: rgba(255, 215, 0, 0.15);
+            border-left: 3px solid #ffd700;
+        }
+
+        .rank {
+            font-weight: bold;
+            color: #ffd700;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .player-name {
+            flex-grow: 1;
+            text-align: left;
+            padding: 0 10px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .player-score {
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .player-time {
+            min-width: 70px;
+            text-align: right;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .message {
+            background: rgba(255, 215, 0, 0.15);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px auto;
+            max-width: 500px;
+            border-left: 3px solid #ffd700;
+            font-size: 0.9rem;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* UPDATED RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 480px) {
+            #game-screen {
+                padding: 10px;
+
+                /* Reduced padding */
+                .game-board {
+                    display: grid;
+                    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr);
+                    gap: 8px;
+                }
+
+                .timer {
+                    font-size: 0.8rem;
+                    padding: 4px 8px;
+                    gap: 4px;
+                }
+
+                .timer i {
+                    font-size: 0.7rem;
+                }
+
+                .column {
+                    padding: 8px;
+                }
+
+                .card {
+                    font-size: 0.85rem;
+                    padding: 10px 10px;
+                    padding-top: 24px;
+                    line-height: 1.5;
+                }
+
+            }
+
+            .game-board {
+                gap: 8px;
+                /* Reduced gap */
+            }
+
+            .column {
+                padding: 10px 40px;
+                /* Reduced padding */
+            }
+
+            .column:first-child {
+                margin-right: -5px;
+                /* Move question column slightly left */
+            }
+
+            .column:last-child {
+                margin-left: -5px;
+                /* Move answer column slightly right */
+            }
+
+            .card {
+                min-height: auto;
+                /* Flexible height */
+                height: auto;
+                /* Flexible height */
+                font-size: 0.82rem;
+                /* Slightly smaller font */
+                padding: 10px 36px;
+                /* Adjusted padding */
+                padding-top: 22px;
+                /* Space for Q/A indicator */
+            }
+
+            .column-title {
+                font-size: 1.1rem;
+                padding: 0 5px;
+                /* Added padding */
+            }
+
+            .timer {
+                font-size: 1rem;
+                /* Reduced font size */
+                padding: 6px 12px;
+                /* Reduced padding */
+                gap: 4px;
+                /* Reduced gap */
+            }
+
+            .timer i {
+                font-size: 0.8rem;
+                /* Reduced icon size */
+            }
+
+            .player-icon {
+                width: 38px;
+                /* Reduced size */
+                height: 38px;
+                /* Reduced size */
+                font-size: 1rem;
+                /* Reduced font */
+            }
+
+            #current-player {
+                font-size: 1.05rem;
+                /* Reduced font */
+                max-width: 120px;
+                /* Reduced max width */
+            }
+
+            /* Position Q/A indicators better */
+            .card:before {
+                top: 6px;
+                left: 6px;
+                font-size: 0.8rem;
+                /* Reduced size */
+            }
+
+            /* Reduce gap between cards */
+            .cards-container {
+                gap: 7px;
+                /* Reduced gap */
+            }
+
+            .btn {
+                padding: 12px 20px;
+                /* Reduced padding */
+                font-size: 0.95rem;
+                /* Reduced font */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                margin: 20px;
+            }
+
+            #welcome-screen {
+                padding: 40px 30px;
+            }
+
+            .logo {
+                font-size: 5rem;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            input {
+                padding: 15px 20px;
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 15px 35px;
+                font-size: 1.1rem;
+                width: auto;
+            }
+
+            #game-screen {
+                padding: 25px;
+            }
+
+            .game-board {
+                gap: 25px;
+                min-height: 500px;
+            }
+
+            .card {
+                min-height: 100px;
+                font-size: 1.1rem;
+            }
+
+            .score-title {
+                font-size: 2.5rem;
+            }
+
+            .game-header {
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 25px;
+            }
+
+            .player-info {
+                justify-content: flex-start;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Welcome Screen -->
+    <div id="welcome-screen" class="container">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h1>Business Economics Challenge</h1>
+        <p class="subtitle">Match business concepts with their definitions. Test your knowledge against the clock!</p>
+
+        <div class="input-group">
+            <input type="text" id="player-name" placeholder="Enter your name" autocomplete="off">
+        </div>
+
+        <button id="start-btn" class="btn">
+            <i class="fas fa-play"></i> Start Challenge
+        </button>
+        <button id="view-leaderboard" class="btn btn-secondary">
+            <i class="fas fa-trophy"></i> View Leaderboard
+        </button>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="container">
+        <div class="game-header">
+            <div class="player-info">
+                <div class="player-icon" id="player-initial">?</div>
+                <div class="player-name-container">
+                    <h2 id="current-player">Player</h2>
+                </div>
+            </div>
+            <div class="timer">
+                <i class="fas fa-clock"></i>
+                <span id="time">01:30</span>
+            </div>
+        </div>
+
+        <div class="game-board">
+            <div class="column">
+                <h3 class="column-title">Business Concepts</h3>
+                <div class="cards-container" id="questions-container"></div>
+            </div>
+
+            <div class="column">
+                <h3 class="column-title">Definitions</h3>
+                <div class="cards-container" id="answers-container"></div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 15px;">
+            <button id="finish-btn" class="btn">
+                <i class="fas fa-flag-checkered"></i> Finish Challenge
+            </button>
+        </div>
+    </div>
+
+    <!-- Score Screen -->
+    <div id="score-screen" class="container">
+        <h2 class="score-title">Challenge Results</h2>
+
+        <div class="result-container">
+            <div class="result-item">
+                <span>Participant:</span>
+                <span class="result-value" id="result-name">Player</span>
+            </div>
+            <div class="result-item">
+                <span>Correct Matches:</span>
+                <span class="result-value" id="result-score">0</span>
+            </div>
+            <div class="result-item">
+                <span>Time Spent:</span>
+                <span class="result-value" id="result-time">00:00</span>
+            </div>
+        </div>
+
+        <div class="message">
+            <i class="fas fa-info-circle"></i> Each device can only play once. Your result has been recorded.
+        </div>
+
+        <div class="leaderboard">
+            <h3><i class="fas fa-trophy"></i> Economics Leaderboard</h3>
+            <div id="leaderboard-container"></div>
+        </div>
+
+        <div class="btn-container">
+            <button id="new-player" class="btn btn-secondary">
+                <i class="fas fa-user"></i> New Participant
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Business and Economics questions and answers
+        const questions = [
+            "Define Goods",
+            "Define Needs",
+            "What is the Primary Sector?",
+            "Define Production",
+            "What is the Quaternary Sector?",
+            "What is the Secondary Sector?",
+            "Define Services",
+            "What is the Tertiary Sector?",
+            "What does Adding Value mean?",
+            "Define Wants",
+            "What are Businesses?"
+        ];
+
+        const answers = [
+            "Physical products sold to customers, e.g., laptops, books, perfumes, etc.",
+            "Basic necessities like food, water, warmth, shelter, and clothing.",
+            "Businesses involved in extraction of natural resources like farming, fishing, etc.",
+            "The process of creating goods/services, adding value.",
+            "Tertiary sub-sector focused on knowledge-based activities like research.",
+            "Businesses involved in construction and manufacturing.",
+            "Intangible products sold to customers, e.g., airlines, restaurants, etc.",
+            "Businesses providing services to customers.",
+            "Producing something worth more than the cost of resources used.",
+            "Desires like new clothes, holidays, and jewelry.",
+            "Organizations that produce goods or provide services."
+        ];
+
+
+        // Game state
+        let gameState = {
+            playerName: "",
+            score: 0,
+            timeLimit: 90, // 2 minutes in seconds
+            timeSpent: 0,
+            timer: null,
+            selectedQuestion: null,
+            matchedPairs: [],
+            leaderboard: JSON.parse(localStorage.getItem('leaderboard')) || [],
+            startTime: null,
+            hasPlayed: localStorage.getItem('hasPlayed') === 'true'
+        };
+
+        // DOM Elements
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const scoreScreen = document.getElementById('score-screen');
+        const playerNameInput = document.getElementById('player-name');
+        const startBtn = document.getElementById('start-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        const newPlayerBtn = document.getElementById('new-player');
+        const viewLeaderboardBtn = document.getElementById('view-leaderboard');
+        const timeDisplay = document.getElementById('time');
+        const playerInitial = document.getElementById('player-initial');
+        const currentPlayer = document.getElementById('current-player');
+        const questionsContainer = document.getElementById('questions-container');
+        const answersContainer = document.getElementById('answers-container');
+        const resultName = document.getElementById('result-name');
+        const resultScore = document.getElementById('result-score');
+        const resultTime = document.getElementById('result-time');
+        const leaderboardContainer = document.getElementById('leaderboard-container');
+
+        // Initialize game
+        function initGame() {
+            if (gameState.hasPlayed) {
+                alert("Each device can only play once. You've already completed the challenge.");
+                return;
+            }
+
+            // Mark device as played
+            localStorage.setItem('hasPlayed', 'true');
+            gameState.hasPlayed = true;
+
+            // Reset game state
+            gameState.score = 0;
+            gameState.timeSpent = 0;
+            gameState.selectedQuestion = null;
+            gameState.matchedPairs = [];
+
+            // Set player name
+            gameState.playerName = playerNameInput.value.trim() || "Participant";
+            playerInitial.textContent = gameState.playerName.charAt(0).toUpperCase();
+            currentPlayer.textContent = gameState.playerName;
+
+            // Generate cards
+            generateCards();
+
+            // Show game screen
+            welcomeScreen.style.display = 'none';
+            gameScreen.style.display = 'flex';
+            scoreScreen.style.display = 'none';
+
+            // Start timer
+            startTimer();
+        }
+
+        // Generate question and answer cards
+        function generateCards() {
+            questionsContainer.innerHTML = '';
+            answersContainer.innerHTML = '';
+
+            // Shuffle questions and answers
+            const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            const shuffledAnswers = [...answers].sort(() => Math.random() - 0.5);
+
+            // Create question cards
+            shuffledQuestions.forEach((question, index) => {
+                const card = document.createElement('div');
+                card.className = 'card question';
+                card.textContent = question;
+                card.dataset.index = index;
+                card.addEventListener('click', () => selectCard(card, 'question'));
+                questionsContainer.appendChild(card);
+            });
+
+            // Create answer cards
+            shuffledAnswers.forEach((answer, index) => {
+                const card = document.createElement('div');
+                card.className = 'card answer';
+                card.textContent = answer;
+                card.dataset.index = index;
+                card.addEventListener('click', () => selectCard(card, 'answer'));
+                answersContainer.appendChild(card);
+            });
+        }
+
+        // Select a card
+        function selectCard(card, type) {
+            // If card is already matched, do nothing
+            if (card.classList.contains('matched')) return;
+
+            // If we're selecting a question
+            if (type === 'question') {
+                // Deselect previous question
+                if (gameState.selectedQuestion) {
+                    gameState.selectedQuestion.classList.remove('selected');
+                }
+
+                // Select new question
+                card.classList.add('selected');
+                gameState.selectedQuestion = card;
+            }
+            // If we're selecting an answer and a question is already selected
+            else if (type === 'answer' && gameState.selectedQuestion) {
+                // Get question and answer text
+                const questionText = gameState.selectedQuestion.textContent;
+                const answerText = card.textContent;
+
+                // Check if it's a match
+                const questionIndex = questions.indexOf(questionText);
+                const isCorrect = answers[questionIndex] === answerText;
+
+                // Mark as matched
+                gameState.selectedQuestion.classList.add('matched');
+                card.classList.add('matched');
+
+                // Update score if correct
+                if (isCorrect) {
+                    gameState.score++;
+                }
+
+                // Add to matched pairs
+                gameState.matchedPairs.push({
+                    question: questionText,
+                    answer: answerText,
+                    correct: isCorrect
+                });
+
+                // Reset selection
+                gameState.selectedQuestion.classList.remove('selected');
+                gameState.selectedQuestion = null;
+
+                // Check if all pairs are matched
+                if (gameState.matchedPairs.length === questions.length) {
+                    endGame();
+                }
+            }
+        }
+
+        // Start the timer
+        function startTimer() {
+            clearInterval(gameState.timer);
+
+            gameState.startTime = Date.now();
+
+            gameState.timer = setInterval(() => {
+                // Calculate time spent in seconds
+                const elapsedSeconds = Math.floor((Date.now() - gameState.startTime) / 1000);
+                gameState.timeSpent = elapsedSeconds;
+
+                // Calculate remaining time for display
+                const remainingTime = gameState.timeLimit - elapsedSeconds;
+
+                // Update timer display
+                const minutes = Math.floor(remainingTime / 60);
+                const seconds = remainingTime % 60;
+                timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                // Flash when time is low
+                if (remainingTime <= 10) {
+                    timeDisplay.parentElement.classList.add('pulse');
+                }
+
+                // End game when time is up
+                if (remainingTime <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // End the game
+        function endGame() {
+            clearInterval(gameState.timer);
+
+            // Calculate time spent (capped at timeLimit)
+            const timeSpent = Math.min(gameState.timeSpent, gameState.timeLimit);
+
+            // Save to leaderboard
+            gameState.leaderboard.push({
+                name: gameState.playerName,
+                score: gameState.score,
+                timeSpent: timeSpent,
+                date: new Date().toISOString()
+            });
+
+            // Sort leaderboard by score (descending) then time spent (ascending)
+            gameState.leaderboard.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.timeSpent - b.timeSpent;
+            });
+
+            // Keep only top 10 scores
+            if (gameState.leaderboard.length > 10) {
+                gameState.leaderboard = gameState.leaderboard.slice(0, 10);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('leaderboard', JSON.stringify(gameState.leaderboard));
+
+            // Show score screen
+            // Send data to Google Sheets
+            fetch('https://script.google.com/macros/s/AKfycbxpAk_K-5jLT9QchRrv9p29mzjfpntRs0G077mqM1o0RrKiDKzYyJHWTq_O4pgcKMO15g/exec', {
+                method: 'POST',
+                body: JSON.stringify({
+                    name: gameState.playerName,
+                    score: gameState.score,
+                    timeSpent: timeSpent
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(res => res.text())
+                .then(res => console.log("Submitted:", res))
+                .catch(err => console.error("Error:", err));
+
+            showScoreScreen();
+        }
+
+        // Show score screen
+        function showScoreScreen() {
+            gameScreen.style.display = 'none';
+            scoreScreen.style.display = 'flex';
+
+            // Update results
+            resultName.textContent = gameState.playerName;
+            resultScore.textContent = gameState.score;
+
+            // Format time spent
+            const minutes = Math.floor(gameState.timeSpent / 60);
+            const seconds = gameState.timeSpent % 60;
+            resultTime.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // Update leaderboard
+            updateLeaderboard();
+        }
+
+        // Update leaderboard display
+        function updateLeaderboard() {
+            leaderboardContainer.innerHTML = '';
+
+            gameState.leaderboard.forEach((player, index) => {
+                const item = document.createElement('div');
+                item.className = 'leaderboard-item';
+                if (player.name === gameState.playerName) {
+                    item.classList.add('you');
+                }
+
+                // Format time spent
+                const minutes = Math.floor(player.timeSpent / 60);
+                const seconds = player.timeSpent % 60;
+                const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                item.innerHTML = `
+                    <div class="rank">${index + 1}</div>
+                    <div class="player-name">${player.name}</div>
+                    <div class="player-score">${player.score}</div>
+                    <div class="player-time">${timeString}</div>
+                `;
+
+                leaderboardContainer.appendChild(item);
+            });
+        }
+
+        // View leaderboard from welcome screen
+        function viewLeaderboard() {
+            // Set dummy player name
+            gameState.playerName = "Leaderboard";
+
+            // Show leaderboard
+            showScoreScreen();
+            welcomeScreen.style.display = 'none';
+            scoreScreen.style.display = 'flex';
+
+            // Update title
+            document.querySelector('.score-title').textContent = "Economics Leaderboard";
+            document.querySelector('.result-container').style.display = 'none';
+            document.querySelector('.message').style.display = 'none';
+        }
+
+        // Event listeners
+        startBtn.addEventListener('click', initGame);
+
+        finishBtn.addEventListener('click', endGame);
+
+        newPlayerBtn.addEventListener('click', () => {
+            scoreScreen.style.display = 'none';
+            welcomeScreen.style.display = 'flex';
+            playerNameInput.value = '';
+            document.querySelector('.result-container').style.display = 'block';
+            document.querySelector('.message').style.display = 'block';
+            document.querySelector('.score-title').textContent = "Challenge Results";
+        });
+
+        viewLeaderboardBtn.addEventListener('click', viewLeaderboard);
+
+        // Enter key to start game
+        playerNameInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                startBtn.click();
+            }
+        });
+
+        // Check if already played on page load
+        window.addEventListener('load', () => {
+            if (gameState.hasPlayed) {
+                startBtn.classList.add('btn-disabled');
+                startBtn.innerHTML = '<i class="fas fa-lock"></i> Challenge Completed';
+                playerNameInput.placeholder = "You've already completed the challenge";
+                playerNameInput.disabled = true;
+            }
+
+            // Initialize welcome screen
+            welcomeScreen.style.display = 'flex';
+        });
+    </script>
+</body>
+
+</html>
