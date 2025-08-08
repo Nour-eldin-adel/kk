@@ -25,7 +25,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
             color: #f0f8ff;
             touch-action: manipulation;
         }
@@ -37,7 +37,7 @@
             backdrop-filter: blur(10px);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
+            overflow: auto;
             display: none;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -47,20 +47,22 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 20px 15px;
+            padding: 15px 15px;
             text-align: center;
+            justify-content: center;
+            min-height: 80vh;
         }
 
         .logo {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
             color: #ffd700;
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
         }
 
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 1.6rem;
+            margin-bottom: 8px;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, #ffd700, #ffb347);
             -webkit-background-clip: text;
@@ -71,10 +73,10 @@
         }
 
         .subtitle {
-            font-size: 0.95rem;
-            margin-bottom: 25px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
             max-width: 600px;
-            line-height: 1.5;
+            line-height: 1.4;
             color: #e0f7ff;
             padding: 0 10px;
         }
@@ -82,7 +84,7 @@
         .input-group {
             width: 100%;
             max-width: 400px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
             padding: 0 15px;
         }
@@ -110,14 +112,14 @@
             background: linear-gradient(45deg, #1a936f, #88d498);
             color: white;
             border: none;
-            padding: 14px 25px;
-            font-size: 1rem;
+            padding: 12px 20px;
+            font-size: 0.95rem;
             font-weight: 600;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(26, 147, 111, 0.4);
-            margin: 8px;
+            margin: 6px;
             width: 90%;
             max-width: 300px;
             display: flex;
@@ -158,15 +160,66 @@
         #game-screen {
             padding: 15px;
             display: none;
+            flex-direction: column;
+            height: 100vh;
+            max-height: 100vh;
         }
 
-        .game-header {
+        .game-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 15px;
-            padding: 0 0px;
-            gap: 10px;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+        }
+
+        .cards-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .cards-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .cards-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.5);
+            border-radius: 2px;
+        }
+
+        .cards-container::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 215, 0, 0.7);
+        }
+
+        .top-controls {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 0 15px;
+            flex-shrink: 0;
+        }
+
+        .game-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .player-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 0;
+            gap: 8px;
+            flex-shrink: 0;
         }
 
         .player-info {
@@ -207,54 +260,58 @@
         }
 
         .timer {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 10px 15px;
-            /* Reduced padding */
+            background: rgba(0, 0, 0, 0.3);
+            padding: 12px 18px;
             border-radius: 50px;
-            font-size: 1.1rem;
-            /* Reduced font size */
+            font-size: 1.2rem;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
-            /* Reduced gap */
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             width: fit-content;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .timer i {
             color: #ffd700;
-            font-size: 0.9rem;
-            /* Reduced icon size */
+            font-size: 1rem;
         }
 
         /* MAIN CHANGE: Columns side-by-side on mobile */
         .game-board {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            min-height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 20px;
             width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .column {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            padding: 12px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            min-width: 0;
-            /* Allows column to shrink */
             flex: 1;
-            /* Take up available space */
+            max-width: 500px;
+            min-width: 300px;
+            height: 100%;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .column-title {
             text-align: center;
             font-size: 1.2rem;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
             padding-bottom: 8px;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
@@ -262,15 +319,19 @@
             white-space: normal;
             overflow: visible;
             font-weight: 600;
-            /* Ensure horizontal text */
             writing-mode: horizontal-tb;
             text-orientation: mixed;
+            flex-shrink: 0;
         }
 
         .cards-container {
             display: grid;
             grid-template-columns: 1fr;
             gap: 8px;
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 5px;
+            min-height: 0;
         }
 
         /* UPDATED CARD STYLES */
@@ -502,22 +563,77 @@
 
         /* UPDATED RESPONSIVE ADJUSTMENTS */
         @media (max-width: 480px) {
+            body {
+                padding: 5px;
+                align-items: flex-start;
+                padding-top: 10vh;
+            }
+
+            #welcome-screen {
+                padding: 10px 10px;
+                min-height: auto;
+                justify-content: flex-start;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+                margin-bottom: 10px;
+            }
+
+            h1 {
+                font-size: 1.4rem;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 15px;
+                line-height: 1.3;
+            }
+
+            .input-group {
+                margin-bottom: 12px;
+                padding: 0 10px;
+            }
+
+            input {
+                padding: 12px 16px;
+                font-size: 0.95rem;
+            }
+
+            .btn {
+                padding: 10px 18px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+
             #game-screen {
-                padding: 4px;
+                padding: 8px;
+            }
+
+            .top-controls {
+                flex-direction: row;
+                justify-content: space-between;
+                margin-bottom: 15px;
+                max-width: 100%;
+                padding: 0 5px;
             }
 
             .game-board {
-                gap: 2px;
-                grid-template-columns: 1fr 1fr;
+                flex-direction: row;
+                gap: 12px;
+                max-width: 100%;
             }
 
             .column {
-                padding: 4px 2px;
-                gap: 4px;
+                padding: 15px 10px;
+                gap: 8px;
+                min-width: 0;
+                max-width: none;
             }
 
             .column-title {
-                font-size: 0.9rem;
+                font-size: 1rem;
                 margin-bottom: 8px;
                 padding-bottom: 6px;
                 white-space: normal;
@@ -526,11 +642,11 @@
             }
 
             .card {
-                min-height: 70px;
-                font-size: 0.75rem;
-                padding: 4px 2px;
-                padding-top: 16px;
-                padding-bottom: 4px;
+                min-height: 75px;
+                font-size: 0.8rem;
+                padding: 6px 4px;
+                padding-top: 18px;
+                padding-bottom: 6px;
                 line-height: 1.3;
                 border-radius: 8px;
                 box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
@@ -553,7 +669,7 @@
             }
 
             .cards-container {
-                gap: 2px;
+                gap: 4px;
             }
 
             .timer {
@@ -620,8 +736,14 @@
             }
 
             .game-board {
-                gap: 25px;
+                gap: 40px;
                 min-height: 500px;
+                max-width: 1400px;
+            }
+
+            .column {
+                max-width: 600px;
+                padding: 25px;
             }
 
             .card {
@@ -670,35 +792,37 @@
 
     <!-- Game Screen -->
     <div id="game-screen" class="container">
-        <div class="game-header">
-            <div class="player-info">
-                <div class="player-icon" id="player-initial">?</div>
-                <div class="player-name-container">
-                    <h2 id="current-player">Player</h2>
-                </div>
-            </div>
+        <div class="top-controls">
             <div class="timer">
                 <i class="fas fa-clock"></i>
                 <span id="time">03:00</span>
             </div>
-        </div>
-
-        <div class="game-board">
-            <div class="column">
-                <h3 class="column-title">Questions</h3>
-                <div class="cards-container" id="questions-container"></div>
-            </div>
-
-            <div class="column">
-                <h3 class="column-title">Answers</h3>
-                <div class="cards-container" id="answers-container"></div>
-            </div>
-        </div>
-
-        <div style="text-align: center; margin-top: 15px;">
             <button id="finish-btn" class="btn">
                 <i class="fas fa-flag-checkered"></i> Finish Challenge
             </button>
+        </div>
+
+        <div class="game-content">
+            <div class="player-header">
+                <div class="player-info">
+                    <div class="player-icon" id="player-initial">?</div>
+                    <div class="player-name-container">
+                        <h2 id="current-player">Player</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-board">
+                <div class="column">
+                    <h3 class="column-title">Questions</h3>
+                    <div class="cards-container" id="questions-container"></div>
+                </div>
+
+                <div class="column">
+                    <h3 class="column-title">Answers</h3>
+                    <div class="cards-container" id="answers-container"></div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -779,7 +903,7 @@
             matchedPairs: [],
             leaderboard: JSON.parse(localStorage.getItem('leaderboard')) || [],
             startTime: null,
-            hasPlayed: localStorage.getItem('hasPlayed') === 'true'
+            hasPlayed2: localStorage.getItem('hasPlayed2') === 'true'
         };
 
         // DOM Elements
@@ -803,14 +927,14 @@
 
         // Initialize game
         function initGame() {
-            if (gameState.hasPlayed) {
+            if (gameState.hasPlayed2) {
                 alert("Each device can only play once. You've already completed the challenge.");
                 return;
             }
 
             // Mark device as played
-            localStorage.setItem('hasPlayed', 'true');
-            gameState.hasPlayed = true;
+            localStorage.setItem('hasPlayed2', 'true');
+            gameState.hasPlayed2 = true;
 
             // Reset game state
             gameState.score = 0;
@@ -1068,7 +1192,7 @@
 
         // Check if already played on page load
         window.addEventListener('load', () => {
-            if (gameState.hasPlayed) {
+            if (gameState.hasPlayed2) {
                 startBtn.classList.add('btn-disabled');
                 startBtn.innerHTML = '<i class="fas fa-lock"></i> Challenge Completed';
                 playerNameInput.placeholder = "You've already completed the challenge";
